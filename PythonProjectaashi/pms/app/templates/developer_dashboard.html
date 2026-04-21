@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Developer Dashboard</title>
+</head>
+<body style="margin:0; font-family:Arial; background:#f0fff4;">
+
+    <!-- HEADER -->
+    <div style="background:#2e7d32; color:white; padding:15px; text-align:center; font-size:22px;">
+        Project Management System
+    </div>
+
+    <!-- CENTER CONTENT -->
+    <div style="width:80%; margin:40px auto; background:white; padding:20px; border-radius:10px;">
+
+        <h2 style="text-align:center;">Welcome {{ developer.name }}</h2>
+
+        <table border="1" width="100%" style="border-collapse:collapse; text-align:center;">
+            <tr style="background:#a5d6a7;">
+                <th>Start date</th>
+                <th>End date</th>
+                <th>Project</th>
+                <th>Task</th>
+                <th>Status</th>
+            </tr>
+
+            {% for task in tasks %}
+            <tr>
+                <td>{{ task.start_date }}</td>
+                <td>{{ task.end_date }}</td>
+                <td>{{ task.project.name }}</td>
+                <td>{{ task.title }}</td>
+                <td>{{ task.status }}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+</body>
+</html>

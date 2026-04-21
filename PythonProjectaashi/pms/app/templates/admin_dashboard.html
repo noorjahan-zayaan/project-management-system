@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Dashboard</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+}
+
+/* HEADER */
+.header {
+    background: #4caf50;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-size: 22px;
+}
+
+/* MAIN LAYOUT */
+.container {
+    display: flex;
+    height: 90vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 220px;
+    background: #e8f5e9;
+    padding: 20px;
+}
+
+.sidebar button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: none;
+    background: #81c784;
+    cursor: pointer;
+}
+
+.sidebar button:hover {
+    background: #66bb6a;
+}
+
+/* CONTENT AREA */
+.content {
+    flex: 1;
+    padding: 30px;
+}
+
+/* FORM BOX */
+.form-box {
+    width: 400px;
+    background: #f1f8e9;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+input, select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 10px;
+}
+
+/* BUTTON GROUP */
+.btn-group {
+    margin-top: 15px;
+}
+
+.btn-group button {
+    padding: 8px 12px;
+    margin-right: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.add-btn { background: #4caf50; color: white; }
+.delete-btn { background: red; color: white; }
+.exit-btn { background: gray; color: white; }
+
+/* TABLE */
+table {
+    margin-top: 30px;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+</style>
+
+<script>
+function showForm(type) {
+    document.getElementById("devForm").style.display = "none";
+    document.getElementById("projForm").style.display = "none";
+    document.getElementById("taskForm").style.display = "none";
+
+    if(type)
+        document.getElementById(type).style.display = "block";
+}
+</script>
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    Project Management System
+</div>
+
+<div class="container">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <button onclick="showForm('devForm')">Add Developer</button>
+    <button onclick="showForm('projForm')">Add Project</button>
+    <button onclick="showForm('taskForm')">Add Task</button>
+    <a href="/logout/"><button style="background:red;color:white;">Logout</button></a>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+<!-- ADD DEVELOPER -->
+<div id="devForm" class="form-box" style="display:none;">
+<h3>Add Developer</h3>
+
+<form method="POST">
+{% csrf_token %}
+<input name="empid" placeholder="Employee ID">
+<input name="name" placeholder="Name">
+<input name="email" placeholder="Email">
+<input name="username" placeholder="Username">
+<input name="password" placeholder="Password">
+
+<input type="hidden" name="add_dev">
+
+<div class="btn-group">
+<button class="add-btn">Add</button>
+<button type="reset" class="delete-btn">Clear</button>
+<button type="button" class="exit-btn" onclick="showForm('')">Exit</button>
+</div>
+</form>
+</div>
+
+<!-- ADD PROJECT -->
+<div id="projForm" class="form-box" style="display:none;">
+<h3>Add Project</h3>
+
+<form method="POST">
+{% csrf_token %}
+<input name="pname" placeholder="Project Name">
+<input name="desc" placeholder="Description">
+
+<label>Start Date</label>
+<input type="date" name="start">
+
+<label>End Date</label>
+<input type="date" name="end">
+
+<select name="status">
+<option>Pending</option>
+<option>In Progress</option>
+<option>Completed</option>
+</select>
+
+<input type="hidden" name="add_project">
+
+<div class="btn-group">
+<button class="add-btn">Add</button>
+<button type="reset" class="delete-btn">Clear</button>
+<button type="button" class="exit-btn" onclick="showForm('')">Exit</button>
+</div>
+</form>
+</div>
+
+<!-- ADD TASK -->
+<div id="taskForm" class="form-box" style="display:none;">
+<h3>Add Task</h3>
+
+<form method="POST">
+{% csrf_token %}
+<input name="title" placeholder="Task Title">
+
+<select name="project">
+{% for p in projects %}
+<option value="{{p.id}}">{{p.name}}</option>
+{% endfor %}
+</select>
+
+<select name="developer">
+{% for d in developers %}
+<option value="{{d.id}}">{{d.name}}</option>
+{% endfor %}
+</select>
+
+<label>Start Date</label>
+<input type="date" name="start">
+
+<label>End Date</label>
+<input type="date" name="end">
+
+<select name="status">
+<option>Pending</option>
+<option>In Progress</option>
+<option>Completed</option>
+</select>
+
+<input type="hidden" name="add_task">
+
+<div class="btn-group">
+<button class="add-btn">Add</button>
+<button type="reset" class="delete-btn">Clear</button>
+<button type="button" class="exit-btn" onclick="showForm('')">Exit</button>
+</div>
+</form>
+</div>
+
+<!-- TASK TABLE -->
+<h3>All Tasks</h3>
+
+<table>
+<tr>
+<th>Title</th>
+<th>Project</th>
+<th>Developer</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+
+{% for t in tasks %}
+<tr>
+<td>{{t.title}}</td>
+<td>{{t.project.name}}</td>
+<td>{{t.developer.name}}</td>
+<td>{{t.status}}</td>
+
+<td>
+<form method="POST">
+{% csrf_token %}
+<input type="hidden" name="task_id" value="{{t.id}}">
+<button name="delete_task">Delete</button>
+</form>
+</td>
+</tr>
+{% endfor %}
+</table>
+
+</div>
+</div>
+
+</body>
+</html>

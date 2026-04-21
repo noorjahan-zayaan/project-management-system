@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Project Management System</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to right, #dcedc8, #a5d6a7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            width: 350px;
+        }
+
+        h1 {
+            color: #1b5e20;
+            margin-bottom: 10px;
+        }
+
+        .quote {
+            font-size: 14px;
+            color: #2e7d32;
+            margin-bottom: 5px;
+            font-style: italic;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            border-bottom: 2px solid #66bb6a;
+            background: transparent;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 10px;
+            background: #43a047;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background: #2e7d32;
+        }
+
+        .hint {
+            font-size: 12px;
+            color: #555;
+            margin-top: 10px;
+        }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- TITLE -->
+    <h1>Project Management System</h1>
+
+    <!-- QUOTES -->
+    <p class="quote">"Plan smart. Work fast. Deliver better."</p>
+    <p class="quote">"Consistency turns small tasks into big success."</p>
+
+    <!-- ERROR -->
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <!-- LOGIN FORM -->
+    <form method="POST">
+        {% csrf_token %}
+
+        <input type="text" name="email" placeholder="Enter Email" required>
+
+        <input type="password" name="password" placeholder="Enter Password" required>
+
+        <!-- OPTIONAL ROLE SELECT -->
+        <!--
+        <select name="role">
+            <option value="admin">Admin</option>
+            <option value="developer">Developer</option>
+        </select>
+        -->
+
+        <button type="submit">Login</button>
+    </form>
+
+    <!-- PASSWORD HINT -->
+<!--    <p class="hint">-->
+<!--        Admin: admin@gmail.com / admin123-->
+<!--    </p>-->
+
+</div>
+
+</body>
+</html>
